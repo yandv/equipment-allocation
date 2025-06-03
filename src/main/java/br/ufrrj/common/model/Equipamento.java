@@ -1,7 +1,6 @@
 package br.ufrrj.common.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Equipamento implements Serializable {
 
-    private final UUID
-     id;
+    private final Integer id;
     private final String nome;
 
 }

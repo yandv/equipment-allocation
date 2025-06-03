@@ -3,7 +3,6 @@ package br.ufrrj.common.rmi;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
-import java.util.UUID;
 
 import br.ufrrj.common.model.Equipamento;
 
@@ -15,7 +14,7 @@ public interface EquipamentoService extends Remote {
 
     void deletarEquipamento(Equipamento equipamento) throws RemoteException;
 
-    Equipamento consultarEquipamentoPeloId(UUID id) throws RemoteException;
+    Equipamento consultarEquipamentoPeloId(Integer id) throws RemoteException;
 
     List<Equipamento> consultarTodosEquipamentos() throws RemoteException;
     

@@ -3,7 +3,6 @@ package br.ufrrj.common.repository.impl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import br.ufrrj.common.database.connection.Database;
 import br.ufrrj.common.model.Equipamento;
@@ -16,38 +15,41 @@ public class EquipamentoRepository extends DatabaseRepository<Equipamento> {
     }
 
     public Equipamento criarEquipamento(String nome) throws SQLException {
-        UUID id = UUID.randomUUID();
-        this.database.executeStatement("INSERT INTO equipamentos (id, nome) VALUES (?, ?)",
+        return this.database.executeQuery("INSERT INTO equipamentos (nome) VALUES (?) RETURNING *",
                 statement -> {
-                    statement.setObject(1, id);
-                    statement.setString(2, nome);
+                    statement.setString(1, nome);
+                },
+                resultSet -> {
+                    if (resultSet.next()) {
+                        return new Equipamento(resultSet.getInt("id"), resultSet.getString("nome"));
+                    }
+                    return null;
                 });
-        return new Equipamento(id, nome);
     }
 
     public void atualizarEquipamento(Equipamento equipamento) throws SQLException {
         this.database.executeStatement("UPDATE equipamentos SET nome = ? WHERE id = ?",
                 statement -> {
                     statement.setString(1, equipamento.getNome());
-                    statement.setObject(2, equipamento.getId());
+                    statement.setInt(2, equipamento.getId());
                 });
     }
 
     public void deletarEquipamento(Equipamento equipamento) throws SQLException {
         this.database.executeStatement("DELETE FROM equipamentos WHERE id = ?",
                 statement -> {
-                    statement.setObject(1, equipamento.getId());
+                    statement.setInt(1, equipamento.getId());
                 });
     }
 
-    public Equipamento consultarEquipamentoPeloId(UUID id) throws SQLException {
+    public Equipamento consultarEquipamentoPeloId(Integer id) throws SQLException {
         return this.database.executeQuery("SELECT * FROM equipamentos WHERE id = ?",
                 statement -> {
-                    statement.setObject(1, id);
+                    statement.setInt(1, id);
                 },
                 resultSet -> {
                     if (resultSet.next()) {
-                        return new Equipamento(UUID.fromString(resultSet.getString("id")), resultSet.getString("nome"));
+                        return new Equipamento(resultSet.getInt("id"), resultSet.getString("nome"));
                     }
                     return null;
                 });
@@ -57,7 +59,7 @@ public class EquipamentoRepository extends DatabaseRepository<Equipamento> {
         return this.database.executeQuery("SELECT * FROM equipamentos", resultSet -> {
             var equipamentos = new ArrayList<Equipamento>();
             while (resultSet.next()) {
-                equipamentos.add(new Equipamento(UUID.fromString(resultSet.getString("id")), resultSet.getString("nome")));
+                equipamentos.add(new Equipamento(resultSet.getInt("id"), resultSet.getString("nome")));
             }
             return equipamentos;
         });

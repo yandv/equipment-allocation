@@ -13,6 +13,7 @@ import br.ufrrj.common.repository.impl.EquipamentoRepository;
 import br.ufrrj.common.repository.impl.ReservaRepository;
 import br.ufrrj.common.repository.impl.UsuarioRepository;
 import br.ufrrj.common.rmi.ReservaService;
+import br.ufrrj.common.test.CommandException;
 
 public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaService {
 
@@ -31,30 +32,26 @@ public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaSe
     public void alocarEquipamento(Usuario usuario, Equipamento equipamento, Date dataInicio, Date dataFim) throws RemoteException {
         try {
             if (usuarioRepository.consultarUsuarioPeloId(usuario.getId()) == null) {
-                throw new RemoteException("Usuário não encontrado");
+                throw new CommandException("Usuário não encontrado");
             }
 
             if (equipamentoRepository.consultarEquipamentoPeloId(equipamento.getId()) == null) {
-                throw new RemoteException("Equipamento não encontrado");
+                throw new CommandException("Equipamento não encontrado");
             }
 
             if (!reservaRepository.verificarDisponibilidade(equipamento.getId(), dataInicio, dataFim)) {
-                throw new RemoteException("O equipamento não está disponível para o período especificado");
-            }
-
-            if (dataInicio.before(new Date())) {
-                throw new RemoteException("A data de início não pode ser anterior a data atual");
+                throw new CommandException("O equipamento não está disponível para o período especificado");
             }
 
             if (dataInicio.after(dataFim)) {
-                throw new RemoteException("A data de início não pode ser posterior a data de fim");
+                throw new CommandException("A data de início não pode ser posterior a data de fim");
             }
 
             var reserva = new Reserva(equipamento.getId(), usuario.getId(), dataInicio, dataFim);
             reserva.setStatus(Reserva.ReservaStatus.ATIVO);
             reservaRepository.criarReserva(reserva);
         } catch (SQLException e) {
-            throw new RemoteException("Error allocating equipment", e);
+            throw new CommandException("Error allocating equipment", e);
         }
     }
 
@@ -65,12 +62,12 @@ public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaSe
             var reservaAtiva = reservas.stream()
                 .filter(r -> r.getUsuarioId().equals(usuario.getId()) && r.getStatus() == Reserva.ReservaStatus.ATIVO)
                 .findFirst()
-                .orElseThrow(() -> new RemoteException("Não há reserva ativa para este usuário e equipamento"));
+                .orElseThrow(() -> new CommandException("Não há reserva ativa para este usuário e equipamento"));
 
             reservaAtiva.setStatus(Reserva.ReservaStatus.FINALIZADO);
             reservaRepository.atualizarStatusReserva(reservaAtiva);
         } catch (SQLException e) {
-            throw new RemoteException("Error returning equipment", e);
+            throw new CommandException("Error returning equipment", e);
         }
     }
 
@@ -83,7 +80,7 @@ public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaSe
             }
             return null;
         } catch (SQLException e) {
-            throw new RemoteException("Error checking equipment availability", e);
+            throw new CommandException("Error checking equipment availability", e);
         }
     }
 
@@ -92,7 +89,7 @@ public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaSe
         try {
             return reservaRepository.consultarReservasPorUsuario(usuario.getId());
         } catch (SQLException e) {
-            throw new RemoteException("Error consulting user allocations", e);
+            throw new CommandException("Error consulting user allocations", e);
         }
     }
 
@@ -101,7 +98,7 @@ public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaSe
         try {
             return reservaRepository.consultarReservasPorEquipamento(equipamento.getId());
         } catch (SQLException e) {
-            throw new RemoteException("Error consulting equipment allocations", e);
+            throw new CommandException("Error consulting equipment allocations", e);
         }
     }
 } 

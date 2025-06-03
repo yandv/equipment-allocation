@@ -2,7 +2,6 @@ package br.ufrrj.common.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,8 +13,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Reserva implements Serializable {
 
-    private final UUID equipamentoId;
-    private final UUID usuarioId;
+    private final Integer equipamentoId;
+    private final Integer usuarioId;
     private final Date dataInicio;
     private final Date dataFim;
 

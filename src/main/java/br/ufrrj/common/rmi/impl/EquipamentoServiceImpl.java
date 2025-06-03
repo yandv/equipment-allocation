@@ -4,11 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
 import br.ufrrj.common.model.Equipamento;
 import br.ufrrj.common.repository.impl.EquipamentoRepository;
 import br.ufrrj.common.rmi.EquipamentoService;
+import br.ufrrj.common.test.CommandException;
 
 public class EquipamentoServiceImpl extends UnicastRemoteObject implements EquipamentoService {
 
@@ -24,7 +24,7 @@ public class EquipamentoServiceImpl extends UnicastRemoteObject implements Equip
         try {
             return this.equipamentoRepository.criarEquipamento(nome);
         } catch (SQLException e) {
-            throw new RemoteException("Error creating equipment", e);
+            throw new CommandException("Error creating equipment", e);
         }
     }
 
@@ -33,7 +33,7 @@ public class EquipamentoServiceImpl extends UnicastRemoteObject implements Equip
         try {
             this.equipamentoRepository.atualizarEquipamento(equipamento);
         } catch (SQLException e) {
-            throw new RemoteException("Error updating equipment", e);
+            throw new CommandException("Error updating equipment", e);
         }
     }
 
@@ -42,16 +42,16 @@ public class EquipamentoServiceImpl extends UnicastRemoteObject implements Equip
         try {
             this.equipamentoRepository.deletarEquipamento(equipamento);
         } catch (SQLException e) {
-            throw new RemoteException("Error deleting equipment", e);
+            throw new CommandException("Error deleting equipment", e);
         }
     }
 
     @Override
-    public Equipamento consultarEquipamentoPeloId(UUID id) throws RemoteException {
+    public Equipamento consultarEquipamentoPeloId(Integer id) throws RemoteException {
         try {
             return this.equipamentoRepository.consultarEquipamentoPeloId(id);
         } catch (SQLException e) {
-            throw new RemoteException("Error consulting equipment by id", e);
+            throw new CommandException("Error consulting equipment by id", e);
         }
     }
 
@@ -60,7 +60,7 @@ public class EquipamentoServiceImpl extends UnicastRemoteObject implements Equip
         try {
             return this.equipamentoRepository.consultarTodosEquipamentos();
         } catch (SQLException e) {
-            throw new RemoteException("Error consulting all equipments", e);
+            throw new CommandException("Error consulting all equipments", e);
         }
     }
 

@@ -7,7 +7,6 @@ import br.ufrrj.common.rmi.UsuarioService;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
-import java.util.UUID;
 
 public class UsuarioServiceImpl extends UnicastRemoteObject implements UsuarioService {
 
@@ -24,7 +23,7 @@ public class UsuarioServiceImpl extends UnicastRemoteObject implements UsuarioSe
     }
 
     @Override
-    public Usuario consultarUsuarioPeloId(UUID id) throws RemoteException {
+    public Usuario consultarUsuarioPeloId(Integer id) throws RemoteException {
         return usuarioRepository.consultarUsuarioPeloId(id);
     }
 
