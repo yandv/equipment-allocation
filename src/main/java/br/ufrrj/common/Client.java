@@ -57,7 +57,7 @@ public class Client {
 
             clearConsole();
 
-            // handleMainLoop(args);
+            handleMainLoop(args);
         } catch (Exception e) {
             System.err.println("Erro ao conectar ao servidor: " + e.getMessage());
             e.printStackTrace();

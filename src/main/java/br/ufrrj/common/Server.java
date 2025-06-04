@@ -1,7 +1,10 @@
 package br.ufrrj.common;
 
+import java.rmi.AlreadyBoundException;
+import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.RemoteException;
 
 import br.ufrrj.common.config.Configuration;
 import br.ufrrj.common.database.connection.impl.PostgresDatabase;
@@ -38,15 +41,33 @@ public class Server {
             ReservaRepository reservaRepository = new ReservaRepository(database);
             UsuarioRepository usuarioRepository = new UsuarioRepository(database);
 
+            int serverPort = configuration.getInt("port");
+            String serverHostname = configuration.getString("hostname");
+
+            System.setProperty("java.rmi.server.hostname", serverHostname);
+
             EquipamentoService equipamentoService = new EquipamentoServiceImpl(equipamentoRepository);
-            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository, equipamentoRepository);
+            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository,
+                    equipamentoRepository);
             UsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepository);
 
-            Registry registry = LocateRegistry.createRegistry(configuration.getInt("port"));
-            
-            registry.rebind("EquipamentoService", equipamentoService);
-            registry.rebind("ReservaService", reservaService);
-            registry.rebind("UsuarioService", usuarioService);
+            Registry registry;
+
+            try {
+                registry = LocateRegistry.createRegistry(serverPort);
+            } catch (RemoteException e) {
+                registry = LocateRegistry.getRegistry(serverHostname, serverPort);
+            }
+
+            try {
+                registry.bind("EquipamentoService", equipamentoService);
+                registry.bind("ReservaService", reservaService);
+                registry.bind("UsuarioService", usuarioService);
+            } catch (AlreadyBoundException e) {
+                registry.rebind("EquipamentoService", equipamentoService);
+                registry.rebind("ReservaService", reservaService);
+                registry.rebind("UsuarioService", usuarioService);
+            }
 
             System.out.println("Serviço RMI iniciado na porta 1099");
         } catch (Exception e) {
