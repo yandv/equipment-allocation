@@ -43,6 +43,9 @@ public class Client {
         try {
             Configuration configuration = new Configuration("properties.yaml");
 
+            System.out.println("Conectando ao servidor " + configuration.getString("hostname") + ":"
+                    + configuration.getInt("port"));
+
             Registry registry = LocateRegistry.getRegistry(configuration.getString("hostname"),
                     configuration.getInt("port"));
 
@@ -50,11 +53,13 @@ public class Client {
             equipamentoService = (EquipamentoService) registry.lookup("EquipamentoService");
             reservaService = (ReservaService) registry.lookup("ReservaService");
 
+            System.out.println(usuarioService.consultarTodosUsuarios().size());
+
             scanner = new Scanner(System.in);
 
             clearConsole();
 
-            handleMainLoop(args);
+            // handleMainLoop(args);
         } catch (Exception e) {
             System.err.println("Erro ao conectar ao servidor: " + e.getMessage());
             e.printStackTrace();
