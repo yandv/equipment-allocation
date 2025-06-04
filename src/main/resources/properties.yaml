@@ -1,4 +1,4 @@
-hostname: '20.125.50.26'
+hostname: localhost
 port: 1099
 
 database:
