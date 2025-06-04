@@ -41,6 +41,8 @@ public class Client {
 
     public static void main(String[] args) {
         try {
+            System.out.println("Conectando ao servidor...");
+
             Configuration configuration = new Configuration("properties.yaml");
 
             Registry registry = LocateRegistry.getRegistry(configuration.getString("hostname"),
@@ -49,6 +51,8 @@ public class Client {
             usuarioService = (UsuarioService) registry.lookup("UsuarioService");
             equipamentoService = (EquipamentoService) registry.lookup("EquipamentoService");
             reservaService = (ReservaService) registry.lookup("ReservaService");
+
+            System.out.println("Conectado ao servidor!");
 
             scanner = new Scanner(System.in);
 

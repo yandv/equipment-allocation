@@ -39,11 +39,13 @@ public class Server {
             UsuarioRepository usuarioRepository = new UsuarioRepository(database);
 
             EquipamentoService equipamentoService = new EquipamentoServiceImpl(equipamentoRepository);
-            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository, equipamentoRepository);
+            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository,
+                    equipamentoRepository);
             UsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepository);
 
-            Registry registry = LocateRegistry.createRegistry(configuration.getInt("port"));
-            
+            Registry registry = LocateRegistry.getRegistry(configuration.getString("hostname"),
+                    configuration.getInt("port"));
+
             registry.rebind("EquipamentoService", equipamentoService);
             registry.rebind("ReservaService", reservaService);
             registry.rebind("UsuarioService", usuarioService);
