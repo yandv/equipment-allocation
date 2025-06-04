@@ -98,7 +98,7 @@ public class ReservaRepository extends DatabaseRepository<Reserva> {
     public Reserva consultarReservaPorEquipamentoEData(Integer equipamentoId, Date dataInicio, Date dataFim)
             throws SQLException {
         return this.database.executeQuery(
-                "SELECT reservas.equipamento_id as equipamento_id, reservas.usuario_id as usuario_id, reservas.data_inicio as data_inicio, reservas.data_fim as data_fim, reservas.status as status, equipamentos.id as equipamento_id, equipamentos.nome as equipamento_nome, usuarios.id as usuario_id, usuarios.nome as usuario_nome FROM reservas LEFT JOIN usuarios ON reservas.usuario_id = usuarios.id LEFT JOIN equipamentos ON reservas.equipamento_id = equipamentos.id WHERE reservas.equipamento_id = ? AND reservas.data_inicio = ? AND reservas.data_fim = ?",
+                "SELECT reservas.equipamento_id as equipamento_id, reservas.usuario_id as usuario_id, reservas.data_inicio as data_inicio, reservas.data_fim as data_fim, reservas.status as status, equipamentos.id as equipamento_id, equipamentos.nome as equipamento_nome, usuarios.id as usuario_id, usuarios.nome as usuario_nome FROM reservas LEFT JOIN usuarios ON reservas.usuario_id = usuarios.id LEFT JOIN equipamentos ON reservas.equipamento_id = equipamentos.id WHERE reservas.equipamento_id = ? AND reservas.data_inicio <= ? AND reservas.data_fim >= ?",
                 statement -> {
                     statement.setObject(1, equipamentoId);
                     statement.setTimestamp(2, new java.sql.Timestamp(dataInicio.getTime()));
@@ -129,6 +129,10 @@ public class ReservaRepository extends DatabaseRepository<Reserva> {
                 statement -> {
                     statement.setInt(1, equipamentoId);
                     statement.setString(2, Reserva.ReservaStatus.ATIVO.name());
+                    System.out.println(dataInicio);
+                    System.out.println(new java.sql.Timestamp(dataInicio.getTime()));
+                    System.out.println(dataFim);
+                    System.out.println(new java.sql.Timestamp(dataFim.getTime()));
                     statement.setTimestamp(3, new java.sql.Timestamp(dataInicio.getTime()));
                     statement.setTimestamp(4, new java.sql.Timestamp(dataFim.getTime()));
                 },
