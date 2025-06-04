@@ -1,5 +1,6 @@
 package br.ufrrj.common;
 
+import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
@@ -38,15 +39,19 @@ public class Server {
             ReservaRepository reservaRepository = new ReservaRepository(database);
             UsuarioRepository usuarioRepository = new UsuarioRepository(database);
 
+            int serverPort = configuration.getInt("port");
+
             EquipamentoService equipamentoService = new EquipamentoServiceImpl(equipamentoRepository);
-            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository, equipamentoRepository);
+            ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository,
+                    equipamentoRepository);
             UsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepository);
 
-            Registry registry = LocateRegistry.createRegistry(configuration.getInt("port"));
-            
-            registry.rebind("EquipamentoService", equipamentoService);
-            registry.rebind("ReservaService", reservaService);
-            registry.rebind("UsuarioService", usuarioService);
+            Naming.rebind("//" + System.getProperty("java.rmi.server.hostname") + ":" + serverPort + "/UsuarioService",
+                    usuarioService);
+            Naming.rebind("//" + System.getProperty("java.rmi.server.hostname") + ":" + serverPort + "/EquipamentoService",
+                    equipamentoService);
+            Naming.rebind("//" + System.getProperty("java.rmi.server.hostname") + ":" + serverPort + "/ReservaService",
+                    reservaService);
 
             System.out.println("Serviço RMI iniciado na porta 1099");
         } catch (Exception e) {

@@ -36,7 +36,6 @@ public class Client {
     private static ReservaService reservaService;
 
     private static Menu currentMenu = Menu.MAIN;
-    private static int attempts = 0;
     private static boolean isRunning = true;
 
     public static void main(String[] args) {
@@ -87,15 +86,13 @@ public class Client {
             }
 
             if (e.getMessage().contains("Connection refused")) {
+                e.printStackTrace();
                 System.out
-                        .println("Falha ao se comunicar com o servidor, tentaremos mais " + (3 - attempts)
-                                + " vezes.");
-                attempts++;
-                if (attempts < 3) {
+                        .println("Falha ao se comunicar com o servidor, tente novamente.");
+                try {
+                    Thread.sleep(5000);
                     main(args);
-                } else {
-                    System.out.println("Falha ao se comunicar com o servidor, tente novamente mais tarde.");
-                }
+                } catch (InterruptedException ex) {}
             } else {
                 System.err.println("Erro de comunicação: " + e.getMessage());
             }
