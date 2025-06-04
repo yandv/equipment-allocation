@@ -61,18 +61,12 @@ public class Server {
 
             try {
                 registry.bind("EquipamentoService", equipamentoService);
-                Naming.bind("//" + serverHostname + ":" + serverPort + "/EquipamentoService", equipamentoService);
                 registry.bind("ReservaService", reservaService);
-                Naming.bind("//" + serverHostname + ":" + serverPort + "/ReservaService", reservaService);
                 registry.bind("UsuarioService", usuarioService);
-                Naming.bind("//" + serverHostname + ":" + serverPort + "/UsuarioService", usuarioService);
             } catch (AlreadyBoundException e) {
                 registry.rebind("EquipamentoService", equipamentoService);
-                Naming.rebind("//" + serverHostname + ":" + serverPort + "/EquipamentoService", equipamentoService);
                 registry.rebind("ReservaService", reservaService);
-                Naming.rebind("//" + serverHostname + ":" + serverPort + "/ReservaService", reservaService);
                 registry.rebind("UsuarioService", usuarioService);
-                Naming.rebind("//" + serverHostname + ":" + serverPort + "/UsuarioService", usuarioService);
             }
 
             System.out.println("Serviço RMI iniciado na porta 1099");
