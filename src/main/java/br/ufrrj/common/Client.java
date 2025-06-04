@@ -53,8 +53,6 @@ public class Client {
             equipamentoService = (EquipamentoService) registry.lookup("EquipamentoService");
             reservaService = (ReservaService) registry.lookup("ReservaService");
 
-            System.out.println(usuarioService.consultarTodosUsuarios().size());
-
             scanner = new Scanner(System.in);
 
             clearConsole();
