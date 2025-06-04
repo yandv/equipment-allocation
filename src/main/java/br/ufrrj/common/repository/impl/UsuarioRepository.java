@@ -3,7 +3,7 @@ package br.ufrrj.common.repository.impl;
 import br.ufrrj.common.database.connection.Database;
 import br.ufrrj.common.model.Usuario;
 import br.ufrrj.common.repository.DatabaseRepository;
-import br.ufrrj.common.rmi.UsuarioService;
+import br.ufrrj.common.service.UsuarioService;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;

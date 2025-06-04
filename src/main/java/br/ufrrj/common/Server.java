@@ -8,12 +8,12 @@ import br.ufrrj.common.database.connection.impl.PostgresDatabase;
 import br.ufrrj.common.repository.impl.EquipamentoRepository;
 import br.ufrrj.common.repository.impl.ReservaRepository;
 import br.ufrrj.common.repository.impl.UsuarioRepository;
-import br.ufrrj.common.rmi.EquipamentoService;
-import br.ufrrj.common.rmi.ReservaService;
-import br.ufrrj.common.rmi.UsuarioService;
-import br.ufrrj.common.rmi.impl.EquipamentoServiceImpl;
-import br.ufrrj.common.rmi.impl.ReservaServiceImpl;
-import br.ufrrj.common.rmi.impl.UsuarioServiceImpl;
+import br.ufrrj.common.service.EquipamentoService;
+import br.ufrrj.common.service.ReservaService;
+import br.ufrrj.common.service.UsuarioService;
+import br.ufrrj.common.service.impl.EquipamentoServiceImpl;
+import br.ufrrj.common.service.impl.ReservaServiceImpl;
+import br.ufrrj.common.service.impl.UsuarioServiceImpl;
 
 public class Server {
     public static void main(String[] args) {
@@ -42,7 +42,7 @@ public class Server {
             ReservaService reservaService = new ReservaServiceImpl(reservaRepository, usuarioRepository, equipamentoRepository);
             UsuarioService usuarioService = new UsuarioServiceImpl(usuarioRepository);
 
-            Registry registry = LocateRegistry.createRegistry(1099);
+            Registry registry = LocateRegistry.createRegistry(configuration.getInt("port"));
             
             registry.rebind("EquipamentoService", equipamentoService);
             registry.rebind("ReservaService", reservaService);

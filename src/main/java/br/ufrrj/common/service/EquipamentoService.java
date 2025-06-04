@@ -1,4 +1,4 @@
-package br.ufrrj.common.rmi;
+package br.ufrrj.common.service;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

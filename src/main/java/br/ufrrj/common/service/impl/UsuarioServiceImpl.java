@@ -1,8 +1,8 @@
-package br.ufrrj.common.rmi.impl;
+package br.ufrrj.common.service.impl;
 
 import br.ufrrj.common.model.Usuario;
 import br.ufrrj.common.repository.impl.UsuarioRepository;
-import br.ufrrj.common.rmi.UsuarioService;
+import br.ufrrj.common.service.UsuarioService;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

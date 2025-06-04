@@ -1,4 +1,4 @@
-package br.ufrrj.common.rmi.impl;
+package br.ufrrj.common.service.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -6,14 +6,14 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import br.ufrrj.common.exception.CommandException;
 import br.ufrrj.common.model.Equipamento;
 import br.ufrrj.common.model.Reserva;
 import br.ufrrj.common.model.Usuario;
 import br.ufrrj.common.repository.impl.EquipamentoRepository;
 import br.ufrrj.common.repository.impl.ReservaRepository;
 import br.ufrrj.common.repository.impl.UsuarioRepository;
-import br.ufrrj.common.rmi.ReservaService;
-import br.ufrrj.common.test.CommandException;
+import br.ufrrj.common.service.ReservaService;
 
 public class ReservaServiceImpl extends UnicastRemoteObject implements ReservaService {
 

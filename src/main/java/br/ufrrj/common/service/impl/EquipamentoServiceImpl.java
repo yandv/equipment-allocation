@@ -1,14 +1,14 @@
-package br.ufrrj.common.rmi.impl;
+package br.ufrrj.common.service.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.SQLException;
 import java.util.List;
 
+import br.ufrrj.common.exception.CommandException;
 import br.ufrrj.common.model.Equipamento;
 import br.ufrrj.common.repository.impl.EquipamentoRepository;
-import br.ufrrj.common.rmi.EquipamentoService;
-import br.ufrrj.common.test.CommandException;
+import br.ufrrj.common.service.EquipamentoService;
 
 public class EquipamentoServiceImpl extends UnicastRemoteObject implements EquipamentoService {
 

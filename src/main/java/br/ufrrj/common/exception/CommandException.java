@@ -1,4 +1,4 @@
-package br.ufrrj.common.test;
+package br.ufrrj.common.exception;
 
 import java.rmi.RemoteException;
 

@@ -28,7 +28,6 @@ O projeto segue uma arquitetura em camadas:
 - **Model**: Contém as entidades do sistema
 - **Repository**: Implementa o acesso aos dados
 - **Service**: Implementa a lógica de negócio
-- **RMI**: Expõe os serviços remotamente
 - **Database**: Gerencia a conexão com o banco de dados PostgreSQL
 
 ## Requisitos
@@ -39,8 +38,11 @@ O projeto segue uma arquitetura em camadas:
 
 ## Configuração
 
-1. Configure o arquivo `properties.yaml` com as credenciais do banco de dados:
+1. Configure o arquivo `properties.yaml` com as credenciais do banco de dados e o hostname e porta do servidor:
 ```yaml
+hostname: localhost
+port: 1099
+
 database:
   host: localhost
   port: 5432
@@ -49,12 +51,17 @@ database:
   database: nome_do_banco
 ```
 
-2. Execute o servidor:
+2. Faça o build do projeto:
+```bash
+mvn clean install
+```
+
+3. Execute o servidor:
 ```bash
 java -cp target/equipment-allocation.jar br.ufrrj.common.Server
 ```
 
-3. Execute o cliente:
+4. Execute o cliente:
 ```bash
 java -cp target/equipment-allocation.jar br.ufrrj.common.Client
 ```

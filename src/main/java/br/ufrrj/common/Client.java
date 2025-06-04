@@ -1,12 +1,13 @@
 package br.ufrrj.common;
 
+import br.ufrrj.common.config.Configuration;
+import br.ufrrj.common.exception.CommandException;
 import br.ufrrj.common.model.Equipamento;
 import br.ufrrj.common.model.Reserva;
 import br.ufrrj.common.model.Usuario;
-import br.ufrrj.common.rmi.EquipamentoService;
-import br.ufrrj.common.rmi.ReservaService;
-import br.ufrrj.common.rmi.UsuarioService;
-import br.ufrrj.common.test.CommandException;
+import br.ufrrj.common.service.EquipamentoService;
+import br.ufrrj.common.service.ReservaService;
+import br.ufrrj.common.service.UsuarioService;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -40,13 +41,14 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost");
+            Configuration configuration = new Configuration("properties.yaml");
+
+            Registry registry = LocateRegistry.getRegistry(configuration.getString("hostname"),
+                    configuration.getInt("port"));
 
             usuarioService = (UsuarioService) registry.lookup("UsuarioService");
             equipamentoService = (EquipamentoService) registry.lookup("EquipamentoService");
             reservaService = (ReservaService) registry.lookup("ReservaService");
-
-            attempts = 0;
 
             scanner = new Scanner(System.in);
 
