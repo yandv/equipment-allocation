@@ -125,7 +125,7 @@ public class ReservaRepository extends DatabaseRepository<Reserva> {
 
     public boolean verificarDisponibilidade(Integer equipamentoId, Date dataInicio, Date dataFim) throws SQLException {
         return this.database.executeQuery(
-                "SELECT COUNT(*) as count FROM reservas WHERE equipamento_id = ? AND status = ?::status_reserva AND (data_inicio < ? AND data_fim > ?)",
+                "SELECT COUNT(*) as count FROM reservas WHERE equipamento_id = ? AND status = ?::status_reserva AND ? >= data_inicio AND ? <= data_fim",
                 statement -> {
                     statement.setInt(1, equipamentoId);
                     statement.setString(2, Reserva.ReservaStatus.ATIVO.name());
